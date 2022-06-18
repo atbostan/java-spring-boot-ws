@@ -9,7 +9,6 @@ import com.bossware.app.shared.entities.User;
 public class SpringBootWebServiceV1Application {
 
 	public static void main(String[] args) {
-		User user = new User();
 	
 		SpringApplication.run(SpringBootWebServiceV1Application.class, args);
 	}

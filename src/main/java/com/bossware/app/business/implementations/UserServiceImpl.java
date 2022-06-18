@@ -10,7 +10,7 @@ import com.bossware.app.business.services.UserService;
 import com.bossware.app.core.utils.UserIdGenerator;
 import com.bossware.app.persistance.repositories.UserRepository;
 import com.bossware.app.shared.entities.User;
-import com.bossware.app.shared.models.request.ResponseBaseModel;
+import com.bossware.app.shared.models.response.ResponseBaseModel;
 @Service
 
 public class UserServiceImpl implements  UserService {
@@ -24,7 +24,7 @@ public class UserServiceImpl implements  UserService {
 
 	
 	@Override
-	public ResponseBaseModel<User> createUser(User user) {
+	public ResponseBaseModel<User> create(User user) {
 		user.setUserId(userIdGenerator.generateUserId(5));
 		user.setEncryptedPassword("test");
 	    User createdUser = userRepository.save(user);
@@ -34,27 +34,27 @@ public class UserServiceImpl implements  UserService {
 	}
 
 	@Override
-	public ResponseBaseModel<User> getUserByUserId(String id) {
+	public ResponseBaseModel<User> getEntityById(String id) {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public ResponseBaseModel<User> updateUser(String id, User userDto) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void deleteUser(String id) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public ResponseBaseModel<List<User>> getAll(int page, int limit) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public ResponseBaseModel<User> update(String id, User t) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void delete(String id) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

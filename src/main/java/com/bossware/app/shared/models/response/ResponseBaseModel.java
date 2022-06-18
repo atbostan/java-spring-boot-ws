@@ -1,4 +1,4 @@
-package com.bossware.app.shared.models.request;
+package com.bossware.app.shared.models.response;
 
 import org.springframework.http.HttpStatus;
 
