@@ -1,4 +1,4 @@
-package com.bossware.app.api.shared.entities;
+package com.bossware.app.shared.entities;
 
 import java.io.Serializable;
 import java.util.Date;

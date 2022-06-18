@@ -1,11 +1,8 @@
-package com.bossware.app.api.shared.models.request;
-
-import java.net.http.HttpResponse;
+package com.bossware.app.shared.models.request;
 
 import org.springframework.http.HttpStatus;
 
-import com.bossware.app.api.shared.entities.BaseEntity;
-import com.bossware.app.api.shared.models.request.abstracts.ResponseGenericBase;
+import com.bossware.app.shared.models.request.abstracts.ResponseGenericBase;
 
 public class ResponseBaseModel <T> implements ResponseGenericBase<T> {
 
@@ -32,6 +29,11 @@ public class ResponseBaseModel <T> implements ResponseGenericBase<T> {
 		return t;
 	}
 
+	@Override
+	public T setData(T t) {
+		this.t=t;
+		return this.t;
+	}
 	@Override
 	public String getDataWithString() {
 		return t.toString();
@@ -60,4 +62,6 @@ public class ResponseBaseModel <T> implements ResponseGenericBase<T> {
 	public String getDescription() {
 		return description;
 	}
+
+
 }

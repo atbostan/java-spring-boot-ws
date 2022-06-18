@@ -1,13 +1,11 @@
-package com.bossware.app.api.shared.entities;
+package com.bossware.app.shared.entities;
 
 
 
-import java.io.Serializable;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 
 @Entity(name="users")
 public class User extends BaseEntity{
@@ -92,6 +90,40 @@ public class User extends BaseEntity{
 	public void setEmailVerificationStatus(Boolean emailVerificationStatus) {
 		this.emailVerificationStatus = emailVerificationStatus;
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(email, emailVerificationStatus, emailVerificationToken, encryptedPassword, firstName,
+				lastName, userId);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		return Objects.equals(email, other.email)
+				&& Objects.equals(emailVerificationStatus, other.emailVerificationStatus)
+				&& Objects.equals(emailVerificationToken, other.emailVerificationToken)
+				&& Objects.equals(encryptedPassword, other.encryptedPassword)
+				&& Objects.equals(firstName, other.firstName) && Objects.equals(lastName, other.lastName)
+				&& Objects.equals(userId, other.userId);
+	}
+
+	@Override
+	public String toString() {
+		return "User [userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
+				+ ", encryptedPassword=" + encryptedPassword + ", emailVerificationToken=" + emailVerificationToken
+				+ ", emailVerificationStatus=" + emailVerificationStatus + ", id=" + id + ", creationTime="
+				+ creationTime + ", creatorId=" + creatorId + ", deletionTime=" + deletionTime + ", deletorUserId="
+				+ deletorUserId + ", modificationTime=" + modificationTime + ", modifierUserId=" + modifierUserId + "]";
+	}
+	
+	
 	
 
 }

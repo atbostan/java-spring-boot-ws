@@ -1,10 +1,9 @@
-package com.bossware.app.api.shared.models.request.abstracts;
-
-import java.util.Optional;
+package com.bossware.app.shared.models.request.abstracts;
 
 public interface ResponseGenericBase<T> {
 
 	T getData();
+	T setData(T t);
 	String getDataWithString();
 	
 	
