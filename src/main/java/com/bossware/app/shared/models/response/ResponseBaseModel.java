@@ -8,18 +8,27 @@ public class ResponseBaseModel <T> implements ResponseGenericBase<T> {
 
 	
 	private T t;
-	private Exception e;
 	private HttpStatus status;
 	private String description;
+	
+	public ResponseBaseModel(HttpStatus status) {
+		this.status = status;
+	}
 
 	public ResponseBaseModel(T t, HttpStatus status) {
 		this.t = t;
 		this.status = status;
 	}
 	
-	public ResponseBaseModel(T t, HttpStatus status,Exception e,String description) {
+
+	public ResponseBaseModel( HttpStatus status,String description) {
+		this.status = status;
+		this.description=description;
+	}
+
+
+	public ResponseBaseModel(T t, HttpStatus status,String description) {
 		this.t = t;
-		this.e = e;
 		this.status = status;
 		this.description=description;
 	}
@@ -53,10 +62,6 @@ public class ResponseBaseModel <T> implements ResponseGenericBase<T> {
 		return status.value();
 	}
 
-	@Override
-	public Exception getException() {
-		return e;
-	}
 
 	@Override
 	public String getDescription() {

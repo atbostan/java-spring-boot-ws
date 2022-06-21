@@ -6,17 +6,14 @@ import java.util.Random;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserIdGenerator {
+public class EntityStrIdGenerator {
 	private final Random RANDOM = new SecureRandom();
     private final String ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 	
-    public String generateUserId(int length) {
+    public String generateId(int length) {
         return generateRandomString(length);
     }
     
-    public String generateAddressId(int length) {
-        return generateRandomString(length);
-    }
     
     private String generateRandomString(int length) {
         StringBuilder returnValue = new StringBuilder(length);

@@ -1,6 +1,8 @@
 package com.bossware.app.shared.models.response.abstracts;
 
-public interface ResponseGenericBase<T> {
+import java.io.Serializable;
+
+public interface ResponseGenericBase<T>  extends Serializable{
 
 	T getData();
 	T setData(T t);

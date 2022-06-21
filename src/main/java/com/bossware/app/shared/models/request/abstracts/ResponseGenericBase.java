@@ -1,6 +1,8 @@
 package com.bossware.app.shared.models.request.abstracts;
 
-public interface ResponseGenericBase<T> {
+import java.io.Serializable;
+
+public interface ResponseGenericBase<T> extends Serializable {
 
 	T getData();
 	T setData(T t);
@@ -10,7 +12,6 @@ public interface ResponseGenericBase<T> {
 	boolean isSuccess();
 	int StatusCode();
 	
-	Exception getException();
 	String	getDescription();
 	
 }

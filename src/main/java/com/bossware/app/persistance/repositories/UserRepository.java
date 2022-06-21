@@ -7,5 +7,7 @@ import com.bossware.app.shared.entities.User;
 
 @Repository
 public interface UserRepository extends PagingAndSortingRepository<User, Long> {
+	User findUserByEmail(String email);
 
+	User findByUserId(String userId);
 }

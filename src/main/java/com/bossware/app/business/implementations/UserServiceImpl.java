@@ -1,15 +1,23 @@
 package com.bossware.app.business.implementations;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.bossware.app.business.services.UserService;
-import com.bossware.app.core.utils.UserIdGenerator;
+import com.bossware.app.core.utils.EntityStrIdGenerator;
 import com.bossware.app.persistance.repositories.UserRepository;
+import com.bossware.app.shared.dto.UserDto;
 import com.bossware.app.shared.entities.User;
+import com.bossware.app.shared.messages.ErrorMessages;
+import com.bossware.app.shared.models.exceptions.ServiceExceptionBase;
 import com.bossware.app.shared.models.response.ResponseBaseModel;
 @Service
 
@@ -19,42 +27,56 @@ public class UserServiceImpl implements  UserService {
 	UserRepository userRepository;
 	
 	@Autowired
-	UserIdGenerator userIdGenerator;
+	EntityStrIdGenerator userIdGenerator;
 	
-
+	@Autowired
+	ModelMapper mapper;
 	
 	@Override
-	public ResponseBaseModel<User> create(User user) {
-		user.setUserId(userIdGenerator.generateUserId(5));
+	public ResponseBaseModel<UserDto> create(UserDto t) {
+		User user = mapper.map(t, User.class);
+		user.setUserId(userIdGenerator.generateId(5));
 		user.setEncryptedPassword("test");
 	    User createdUser = userRepository.save(user);
-	    ResponseBaseModel<User> usr = new ResponseBaseModel<User>(createdUser, HttpStatus.OK);
-	    return usr;    
-	    
+	    UserDto returnedEntity = mapper.map(createdUser, UserDto.class);
+	    return new ResponseBaseModel<UserDto>(returnedEntity, HttpStatus.OK);
 	}
 
 	@Override
-	public ResponseBaseModel<User> getEntityById(String id) {
-		// TODO Auto-generated method stub
-		return null;
+	public ResponseBaseModel<UserDto> getEntityById(String id) {
+		User user = userRepository.findByUserId(id);
+		UserDto returnedValue = mapper.map(user, UserDto.class);
+		return new ResponseBaseModel<UserDto>(returnedValue, HttpStatus.OK);
 	}
 
 	@Override
-	public ResponseBaseModel<List<User>> getAll(int page, int limit) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public ResponseBaseModel<UserDto> update(String id, UserDto t) {
+		User user = userRepository.findByUserId(id);
+		if(user==null)  throw new ServiceExceptionBase(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
+		mapper.map(t, user);
+		User updatedEntity = userRepository.save(user);
+		UserDto returnedValue = mapper.map(updatedEntity, UserDto.class);
+		return new ResponseBaseModel<UserDto>(returnedValue, HttpStatus.OK);
 
-	@Override
-	public ResponseBaseModel<User> update(String id, User t) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
 	public void delete(String id) {
-		// TODO Auto-generated method stub
-		
+		User user = userRepository.findByUserId(id);
+		if(user==null) throw new ServiceExceptionBase(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
+		userRepository.delete(user);
 	}
+
+	@Override
+	public ResponseBaseModel<List<UserDto>> getAll(int page, int limit) {
+		Pageable pageReq =  PageRequest.of(page,limit);
+		Page<User> userList = userRepository.findAll(pageReq);
+		List<UserDto> returnedValue = userList.stream().map(e->mapper.map(e, UserDto.class))
+				.collect(Collectors.toList());
+		return new ResponseBaseModel<>(returnedValue,HttpStatus.OK);
+	}
+	
+
+	
 
 }
