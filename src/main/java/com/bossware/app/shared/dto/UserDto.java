@@ -1,11 +1,17 @@
 package com.bossware.app.shared.dto;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+
 public class UserDto {
 	private String firstName;
 	private String lastName;
 	private String email;
 	private String password;
-	
+	@JsonProperty(value = "addresses")
+	private List<AddressDto> addresses;
 	public String getFirstName() {
 		return firstName;
 	}
@@ -29,6 +35,12 @@ public class UserDto {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	public List<AddressDto> getAddresses() {
+		return addresses;
+	}
+	public void setAddresses(List<AddressDto> addresses) {
+		this.addresses = addresses;
 	}
 	
 }

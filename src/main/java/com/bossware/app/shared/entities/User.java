@@ -2,10 +2,14 @@ package com.bossware.app.shared.entities;
 
 
 
+import java.util.List;
 import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+
 
 @Entity(name="users")
 public class User extends BaseEntity{
@@ -36,6 +40,10 @@ public class User extends BaseEntity{
 	@Column(nullable=false)
 	private Boolean emailVerificationStatus=false;
 
+	
+
+	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+	private List<Address> adresses;
 
 	public String getUserId() {
 		return userId;
@@ -93,6 +101,14 @@ public class User extends BaseEntity{
 
 	public void setEmailVerificationStatus(Boolean emailVerificationStatus) {
 		this.emailVerificationStatus = emailVerificationStatus;
+	}
+
+	public List<Address> getAdresses() {
+		return adresses;
+	}
+
+	public void setAdresses(List<Address> adresses) {
+		this.adresses = adresses;
 	}
 
 	@Override

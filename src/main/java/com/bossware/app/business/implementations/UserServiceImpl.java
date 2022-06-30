@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.bossware.app.business.services.UserService;
 import com.bossware.app.core.utils.EntityStrIdGenerator;
 import com.bossware.app.persistance.repositories.UserRepository;
+import com.bossware.app.shared.dto.AddressDto;
 import com.bossware.app.shared.dto.UserDto;
 import com.bossware.app.shared.entities.User;
 import com.bossware.app.shared.messages.ErrorMessages;
@@ -34,6 +36,19 @@ public class UserServiceImpl implements  UserService {
 	
 	@Override
 	public ResponseBaseModel<UserDto> create(UserDto t) {
+
+		for (int i = 0; i < t.getAddresses().size(); i++) {
+			AddressDto addressDto = t.getAddresses().get(i);
+			addressDto.setUserDetails(t);
+			addressDto.setAddressId(userIdGenerator.generateId(30));
+			t.getAddresses().set(i, addressDto);	
+		}
+
+		TypeMap<UserDto, User> typeMap = mapper.getTypeMap(UserDto.class, User.class);
+		if(typeMap==null) {
+			mapper.createTypeMap(UserDto.class, User.class)
+		    .addMapping(UserDto::getAddresses, User::setAdresses);
+		}
 		User user = mapper.map(t, User.class);
 		user.setUserId(userIdGenerator.generateId(5));
 		user.setEncryptedPassword("test");

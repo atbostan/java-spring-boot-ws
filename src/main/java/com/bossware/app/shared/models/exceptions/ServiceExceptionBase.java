@@ -1,8 +1,5 @@
 package com.bossware.app.shared.models.exceptions;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-
 public class ServiceExceptionBase extends RuntimeException {
 
 	/**

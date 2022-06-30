@@ -1,9 +1,7 @@
 package com.bossware.app.api.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,8 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import com.bossware.app.business.services.AddressService;
 import com.bossware.app.business.services.UserService;
+import com.bossware.app.shared.dto.AddressDto;
 import com.bossware.app.shared.dto.UserDto;
 import com.bossware.app.shared.models.request.RequestBaseModel;
 import com.bossware.app.shared.models.response.ResponseBaseModel;
@@ -31,6 +30,9 @@ public class UserController {
 	UserService userService;
 	
 
+	@Autowired
+	AddressService addressService;
+	
 	@GetMapping(path = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
 	public  ResponseBaseModel<UserDto> getUser(@PathVariable String id) {
 		ResponseBaseModel<UserDto> user = userService.getEntityById(id);
@@ -43,6 +45,18 @@ public class UserController {
 		return new ResponseBaseModel<List<UserDto>>(userList.getData(),HttpStatus.OK);
 	}
 
+	
+	@GetMapping(path = "/{id}/address", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	public ResponseBaseModel<List<AddressDto>> getAddressesByUser(@PathVariable String id){
+		ResponseBaseModel<List<AddressDto>> addressList = addressService.getAddressByUserId(id);
+		return new ResponseBaseModel<List<AddressDto>>(addressList.getData(),HttpStatus.OK);
+	}
+	
+	@GetMapping(path = "/{id}/address/{addressId}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	public ResponseBaseModel<AddressDto> getAddressesBelongsToUserByAddressId(@PathVariable String id, @PathVariable String addressId){
+		ResponseBaseModel<AddressDto> addressList = addressService.getAddressBelongsToUsersByAddressId(id,addressId);
+		return new ResponseBaseModel<AddressDto>(addressList.getData(),HttpStatus.OK);
+	}
 
 	@PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, produces = {
 			MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
