@@ -12,6 +12,10 @@ public class UserDto {
 	private String password;
 	@JsonProperty(value = "addresses")
 	private List<AddressDto> addresses;
+	
+	@JsonProperty(value = "roles")
+	private List<RoleDto> roles;
+	
 	public String getFirstName() {
 		return firstName;
 	}
@@ -41,6 +45,12 @@ public class UserDto {
 	}
 	public void setAddresses(List<AddressDto> addresses) {
 		this.addresses = addresses;
+	}
+	public List<RoleDto> getRoles() {
+		return roles;
+	}
+	public void setRoles(List<RoleDto> roles) {
+		this.roles = roles;
 	}
 	
 }

@@ -66,11 +66,11 @@ public class AddressDto {
 		this.addressId = addressId;
 	}
 
-	public UserDto getUserDetails() {
+	public UserDto getUser() {
 		return user;
 	}
 
-	public void setUserDetails(UserDto user) {
+	public void setUser(UserDto user) {
 		this.user = user;
 	}
 
