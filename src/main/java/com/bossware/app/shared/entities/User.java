@@ -37,7 +37,7 @@ public class User extends BaseEntity{
 	private String email;
 	
 	@Column(nullable=false)
-	private String encryptedPassword;
+	private String password;
 	
 	private String emailVerificationToken;
 	
@@ -92,12 +92,12 @@ public class User extends BaseEntity{
 
 
 
-	public String getEncryptedPassword() {
-		return encryptedPassword;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setEncryptedPassword(String encryptedPassword) {
-		this.encryptedPassword = encryptedPassword;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public String getEmailVerificationToken() {
@@ -137,7 +137,7 @@ public class User extends BaseEntity{
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + Objects.hash(adresses, email, emailVerificationStatus, emailVerificationToken,
-				encryptedPassword, firstName, lastName, roles, userId, userName);
+				password, firstName, lastName, roles, userId, userName);
 		return result;
 	}
 
@@ -153,7 +153,7 @@ public class User extends BaseEntity{
 		return Objects.equals(adresses, other.adresses) && Objects.equals(email, other.email)
 				&& Objects.equals(emailVerificationStatus, other.emailVerificationStatus)
 				&& Objects.equals(emailVerificationToken, other.emailVerificationToken)
-				&& Objects.equals(encryptedPassword, other.encryptedPassword)
+				&& Objects.equals(password, other.password)
 				&& Objects.equals(firstName, other.firstName) && Objects.equals(lastName, other.lastName)
 				&& Objects.equals(roles, other.roles) && Objects.equals(userId, other.userId)
 				&& Objects.equals(userName, other.userName);
@@ -162,7 +162,7 @@ public class User extends BaseEntity{
 	@Override
 	public String toString() {
 		return "User [userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName + ", userName="
-				+ userName + ", email=" + email + ", encryptedPassword=" + encryptedPassword
+				+ userName + ", email=" + email + ", encryptedPassword=" + password
 				+ ", emailVerificationToken=" + emailVerificationToken + ", emailVerificationStatus="
 				+ emailVerificationStatus + ", roles=" + roles + ", adresses=" + adresses + ", id=" + id
 				+ ", creationTime=" + creationTime + ", creatorId=" + creatorId + ", deletionTime=" + deletionTime

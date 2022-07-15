@@ -62,7 +62,7 @@ public class UserController {
 			MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
 	public ResponseBaseModel<UserDto> createUser(@RequestBody RequestBaseModel<UserDto> user) throws Exception {
 		ResponseBaseModel<UserDto> createdUser = userService.create(user.getData());
-		return createdUser;
+		return new ResponseBaseModel<UserDto>(createdUser.getData(),HttpStatus.OK);
 
 	}
 	
@@ -71,7 +71,7 @@ public class UserController {
 			MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
 	public ResponseBaseModel<UserDto> updateUser(@PathVariable String id ,@RequestBody RequestBaseModel<UserDto> user ) {
 		ResponseBaseModel<UserDto> updatedUser = userService.update(id,user.getData());
-		return updatedUser;
+		return new ResponseBaseModel<UserDto>(updatedUser.getData(),HttpStatus.OK);
 	}
 	
 	@DeleteMapping(path = "/{id}", produces = {

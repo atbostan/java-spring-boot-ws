@@ -1,5 +1,7 @@
 package com.bossware.app.shared.dto;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 public class AddressDto {
 	private long id;
 	private String addressId;
@@ -8,6 +10,8 @@ public class AddressDto {
 	private String streetName;
 	private String postalCode;
 	private String type;
+	
+    @JsonBackReference
 	private UserDto user;
 
 	public long getId() {

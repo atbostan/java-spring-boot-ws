@@ -1,9 +1,13 @@
 package com.bossware.app.shared.dto;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 public class RoleDto {
 	private long id;
 	private String roleId;
 	private String roleName;
+	
+    @JsonBackReference
 	private UserDto user;
 
 	public long getId() {
