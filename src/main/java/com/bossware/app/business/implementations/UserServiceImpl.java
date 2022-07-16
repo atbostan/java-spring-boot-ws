@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.bossware.app.business.services.UserService;
@@ -25,18 +26,19 @@ import com.bossware.app.shared.models.exceptions.ServiceExceptionBase;
 import com.bossware.app.shared.models.response.ResponseBaseModel;
 
 @Service
-
 public class UserServiceImpl implements UserService {
 
 	@Autowired
-	UserRepository userRepository;
-
+	private UserRepository userRepository;
+	
+	@Autowired
+	private PasswordEncoder encoder;
 
 	@Autowired
-	EntityStrIdGenerator userIdGenerator;
+	private EntityStrIdGenerator userIdGenerator;
 
 	@Autowired
-	ModelMapper mapper;
+	private ModelMapper mapper;
 
 	@Override
 	public ResponseBaseModel<UserDto> create(UserDto t) {
@@ -56,18 +58,9 @@ public class UserServiceImpl implements UserService {
 		}
 
 		TypeMap<UserDto, User> typeMap = mapper.getTypeMap(UserDto.class, User.class);
-		if(typeMap==null) {
-			mapper.createTypeMap(UserDto.class, User.class)
-		    .addMapping(UserDto::getAddresses, User::setAdresses)
-		    .addMapping(UserDto::getRoles, User::setRoles);
-			mapper.createTypeMap(User.class, UserDto.class)
-		    .addMapping(User::getAdresses, UserDto::setAddresses)
-		    .addMapping(User::getRoles, UserDto::setRoles);
-
-		}
+		createEntityMapping();
 		User user = mapper.map(t, User.class);
 		user.setUserId(userIdGenerator.generateId(20));
-		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		user.setPassword(encoder.encode(t.getPassword()));
 	    User createdUser = userRepository.save(user);
 	    UserDto returnedEntity = mapper.map(createdUser, UserDto.class);
@@ -105,9 +98,25 @@ public class UserServiceImpl implements UserService {
 	public ResponseBaseModel<List<UserDto>> getAll(int page, int limit) {
 		Pageable pageReq = PageRequest.of(page, limit);
 		Page<User> userList = userRepository.findAll(pageReq);
+		createEntityMapping();
 		List<UserDto> returnedValue = userList.stream().map(e -> mapper.map(e, UserDto.class))
 				.collect(Collectors.toList());
-		return new ResponseBaseModel<>(returnedValue, HttpStatus.OK);
+		return new ResponseBaseModel<List<UserDto>>(returnedValue, HttpStatus.OK);
 	}
+
+	
+	private void createEntityMapping() {
+		TypeMap<UserDto, User> typeMap = mapper.getTypeMap(UserDto.class, User.class);
+		if(typeMap==null) {
+			mapper.createTypeMap(UserDto.class, User.class)
+		    .addMapping(UserDto::getAddresses, User::setAdresses)
+		    .addMapping(UserDto::getRoles, User::setRoles);
+			mapper.createTypeMap(User.class, UserDto.class)
+		    .addMapping(User::getAdresses, UserDto::setAddresses)
+		    .addMapping(User::getRoles, UserDto::setRoles);
+
+		}
+	}
+
 
 }
