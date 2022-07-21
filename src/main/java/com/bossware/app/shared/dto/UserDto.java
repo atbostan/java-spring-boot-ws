@@ -2,16 +2,21 @@ package com.bossware.app.shared.dto;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 public class UserDto {
+	
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	private String userId;
 	private String firstName;
 	private String lastName;
 	private String userName;
 	private String email;
 	
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String password;
 	
 	@JsonProperty(value = "addresses")
@@ -22,6 +27,12 @@ public class UserDto {
     @JsonManagedReference
 	private List<RoleDto> roles;
 	
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 	public String getFirstName() {
 		return firstName;
 	}
