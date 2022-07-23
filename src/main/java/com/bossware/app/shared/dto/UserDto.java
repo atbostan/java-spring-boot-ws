@@ -19,11 +19,11 @@ public class UserDto {
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String password;
 	
-	@JsonProperty(value = "addresses")
+	@JsonProperty(value = "addresses",access = JsonProperty.Access.READ_ONLY)
     @JsonManagedReference
     private List<AddressDto> addresses;
 	
-	@JsonProperty(value = "roles")
+	@JsonProperty(value = "roles",access = JsonProperty.Access.READ_ONLY)
     @JsonManagedReference
 	private List<RoleDto> roles;
 	

@@ -1,9 +1,12 @@
 package com.bossware.app.shared.dto;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class RoleDto {
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private long id;
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private String roleId;
 	private String roleName;
 	

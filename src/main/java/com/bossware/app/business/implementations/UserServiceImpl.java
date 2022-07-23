@@ -1,5 +1,6 @@
 package com.bossware.app.business.implementations;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,16 +11,19 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.bossware.app.business.services.UserService;
 import com.bossware.app.core.utils.EntityStrIdGenerator;
+import com.bossware.app.persistance.repositories.AddressRepository;
+import com.bossware.app.persistance.repositories.RoleRepository;
 import com.bossware.app.persistance.repositories.UserRepository;
 import com.bossware.app.shared.dto.AddressDto;
 import com.bossware.app.shared.dto.RoleDto;
 import com.bossware.app.shared.dto.UserDto;
+import com.bossware.app.shared.entities.Address;
+import com.bossware.app.shared.entities.Role;
 import com.bossware.app.shared.entities.User;
 import com.bossware.app.shared.messages.ErrorMessages;
 import com.bossware.app.shared.models.exceptions.ServiceExceptionBase;
@@ -30,6 +34,12 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private AddressRepository addressRepository;
+	
+	@Autowired
+	private RoleRepository roleRepository;
 	
 	@Autowired
 	private PasswordEncoder encoder;
@@ -79,9 +89,16 @@ public class UserServiceImpl implements UserService {
 		User user = userRepository.findByUserId(id);
 		if (user == null)
 			throw new ServiceExceptionBase(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
-		mapper.map(t, user);
-		User updatedEntity = userRepository.save(user);
+		User userToUpdated = mapper.map(t, User.class);
+		userToUpdated.setUserId(id);
+		userToUpdated.setId(user.getId());
+		User updatedEntity = userRepository.save(userToUpdated);
 		UserDto returnedValue = mapper.map(updatedEntity, UserDto.class);
+		List<Role> role = roleRepository.findAllByUser(user);
+		List<Address> address = addressRepository.findAllByUser(user);
+		returnedValue.setAddresses(address.stream().map(e->mapper.map(e, AddressDto.class)).collect(Collectors.toList()));
+		returnedValue.setRoles(role.stream().map(e->mapper.map(e, RoleDto.class)).collect(Collectors.toList()));
+
 		return new ResponseBaseModel<UserDto>(returnedValue, HttpStatus.OK);
 
 	}
@@ -101,6 +118,7 @@ public class UserServiceImpl implements UserService {
 		createEntityMapping();
 		List<UserDto> returnedValue = userList.stream().map(e -> mapper.map(e, UserDto.class))
 				.collect(Collectors.toList());
+		
 		return new ResponseBaseModel<List<UserDto>>(returnedValue, HttpStatus.OK);
 	}
 

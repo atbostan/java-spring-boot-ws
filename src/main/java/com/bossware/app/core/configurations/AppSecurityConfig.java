@@ -59,7 +59,7 @@ public class AppSecurityConfig {
 		.and()
 		.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 		.and()
-		.authorizeHttpRequests((auth) -> auth.antMatchers("/users").authenticated().antMatchers(AUTH_WHITELIST).permitAll()).
+		.authorizeHttpRequests((auth) -> auth.antMatchers(AUTH_WHITELIST).permitAll()).
 		httpBasic(Customizer.withDefaults());
 
 		return http.build();

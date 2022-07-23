@@ -13,8 +13,10 @@ import org.springframework.stereotype.Service;
 
 import com.bossware.app.business.services.RoleService;
 import com.bossware.app.persistance.repositories.RoleRepository;
+import com.bossware.app.persistance.repositories.UserRepository;
 import com.bossware.app.shared.dto.RoleDto;
 import com.bossware.app.shared.entities.Role;
+import com.bossware.app.shared.entities.User;
 import com.bossware.app.shared.messages.ErrorMessages;
 import com.bossware.app.shared.models.exceptions.ServiceExceptionBase;
 import com.bossware.app.shared.models.response.ResponseBaseModel;
@@ -24,6 +26,9 @@ public class RoleServiceImpl implements RoleService {
 
 	@Autowired
 	RoleRepository repository;
+	
+	@Autowired
+	UserRepository userRepository;
 
 	@Autowired
 	ModelMapper mapper;
@@ -76,7 +81,9 @@ public class RoleServiceImpl implements RoleService {
 
 	@Override
 	public ResponseBaseModel<List<RoleDto>> getRolesByUserId(String id) {
-		List<Role> roleList = repository.findAllByUserId(id);
+		User entity = userRepository.findByUserId(id);
+		if(entity==null)  throw new ServiceExceptionBase(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
+		List<Role> roleList = repository.findAllByUser(entity);
 		List<RoleDto> returnedValue = roleList.stream().map(e -> mapper.map(e, RoleDto.class))
 				.collect(Collectors.toList());
 		return new ResponseBaseModel<List<RoleDto>>(returnedValue, HttpStatus.OK);

@@ -45,7 +45,7 @@ public class AppAuthProvider implements AuthenticationProvider  {
 		String credentialOne = authentication.getName();
 		String pwd = authentication.getCredentials().toString();
 		User user = userRepository.findUserByEmail(credentialOne);
-		List<Role> roles = roleRepository.findAllByUserId(user.getUserId());
+		List<Role> roles = roleRepository.findAllByUser(user);
 		if (user!=null) {
 			if (encoder.matches(pwd, user.getPassword())) {
 				List<GrantedAuthority> authorities = new ArrayList<>();
