@@ -8,7 +8,4 @@ import com.bossware.app.shared.models.response.ResponseBaseModel;
 
 public interface RoleService extends ServiceGenericBase<RoleDto>  {
 	ResponseBaseModel<List<RoleDto>> getRolesByUserId(String id);
-	ResponseBaseModel<RoleDto> findRoleById(String roleId);
-
- 
 }

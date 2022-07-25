@@ -14,7 +14,10 @@ public class AddressDto {
 	private String postalCode;
 	private String type;
 	
+	private long userId;	
+	
     @JsonBackReference
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private UserDto user;
 
 	public long getId() {
@@ -71,6 +74,14 @@ public class AddressDto {
 
 	public void setAddressId(String addressId) {
 		this.addressId = addressId;
+	}
+
+	public long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(long userId) {
+		this.userId = userId;
 	}
 
 	public UserDto getUser() {

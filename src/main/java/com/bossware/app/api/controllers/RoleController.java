@@ -24,41 +24,44 @@ import com.bossware.app.shared.models.response.ResponseBaseModel;
 @RequestMapping("role")
 public class RoleController {
 	@Autowired
-	RoleService service;
+	RoleService roleService;
 	
-	@GetMapping(path = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
-	public  ResponseBaseModel<RoleDto> getRoles(@PathVariable String id) {
-		ResponseBaseModel<RoleDto> roles = service.getEntityById(id);
-		return roles;
-	}
-	
-	@GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
-	public ResponseBaseModel<List<RoleDto>> getAddress(@RequestParam(value="page",defaultValue = "0") int page,@RequestParam(value="limit",defaultValue = "25") int limit) {
-		ResponseBaseModel<List<RoleDto>> roleList = service.getAll(page,limit);
-		return new ResponseBaseModel<List<RoleDto>>(roleList.getData(),HttpStatus.OK);
-	}
 
-
-	@PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, produces = {
+    //C - U - D
+    @PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, produces = {
 			MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
 	public ResponseBaseModel<RoleDto> createAddress(@RequestBody RequestBaseModel<RoleDto> role) throws Exception {
-		ResponseBaseModel<RoleDto> createdRoles = service.create(role.getData());
+		ResponseBaseModel<RoleDto> createdRoles = roleService.create(role.getData());
 		return createdRoles;
-
 	}
 	
 
 	@PutMapping(path = "/{id}",consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE }, produces = {
 			MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
 	public ResponseBaseModel<RoleDto> updateAddress(@PathVariable String id ,@RequestBody RequestBaseModel<RoleDto> role ) {
-		ResponseBaseModel<RoleDto> updateRole = service.update(id,role.getData());
+		ResponseBaseModel<RoleDto> updateRole = roleService.update(id,role.getData());
 		return updateRole;
 	}
 	
 	@DeleteMapping(path = "/{id}", produces = {
 			MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
 	public void deleteAddress(@PathVariable String id) {
-		service.delete(id);
-
+		roleService.delete(id);
 	}
+
+    //R
+	@GetMapping(path = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	public  ResponseBaseModel<RoleDto> getRoles(@PathVariable String id) {
+		ResponseBaseModel<RoleDto> roles = roleService.getEntityById(id);
+		return roles;
+	}
+	
+	@GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	public ResponseBaseModel<List<RoleDto>> getRoles(@RequestParam(value="page",defaultValue = "0") int page,@RequestParam(value="limit",defaultValue = "25") int limit) {
+		ResponseBaseModel<List<RoleDto>> roleList = roleService.getAll(page,limit);
+		return new ResponseBaseModel<List<RoleDto>>(roleList.getData(),HttpStatus.OK);
+	}
+
+
+	
 }

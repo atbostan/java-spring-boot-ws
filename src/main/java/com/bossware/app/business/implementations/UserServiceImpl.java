@@ -1,6 +1,5 @@
 package com.bossware.app.business.implementations;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,48 +42,26 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private PasswordEncoder encoder;
+    
+    @Autowired
+	private ModelMapper mapper;
 
 	@Autowired
 	private EntityStrIdGenerator userIdGenerator;
 
-	@Autowired
-	private ModelMapper mapper;
-
+    //C - U - D
 	@Override
 	public ResponseBaseModel<UserDto> create(UserDto t) {
-
-		for (int i = 0; i < t.getAddresses().size(); i++) {
-			AddressDto addressDto = t.getAddresses().get(i);
-			addressDto.setUser(t);
-			addressDto.setAddressId(userIdGenerator.generateId(30));
-			t.getAddresses().set(i, addressDto);	
-		}
-		
-		for (int i = 0; i < t.getRoles().size(); i++) {
-			RoleDto roleDto = t.getRoles().get(i);
-			roleDto.setUser(t);
-			roleDto.setRoleId(userIdGenerator.generateId(15));
-			t.getRoles().set(i, roleDto);	
-		}
-
-		TypeMap<UserDto, User> typeMap = mapper.getTypeMap(UserDto.class, User.class);
 		createEntityMapping();
-		User user = mapper.map(t, User.class);
-		user.setUserId(userIdGenerator.generateId(20));
-		user.setPassword(encoder.encode(t.getPassword()));
-	    User createdUser = userRepository.save(user);
-	    UserDto returnedEntity = mapper.map(createdUser, UserDto.class);
-	    return new ResponseBaseModel<UserDto>(returnedEntity, HttpStatus.OK);
+		User mappedUser = mapper.map(t, User.class);
+		mappedUser.setUserId(userIdGenerator.generateId(20));
+		mappedUser.setPassword(encoder.encode(t.getPassword()));
+	    User createdUser = userRepository.save(mappedUser);
+	    UserDto returnedValue = mapper.map(createdUser, UserDto.class);
+	    return new ResponseBaseModel<UserDto>(returnedValue, HttpStatus.OK);
 	}
 
-	@Override
-	public ResponseBaseModel<UserDto> getEntityById(String id) {
-		User user = userRepository.findByUserId(id);
-		UserDto returnedValue = mapper.map(user, UserDto.class);
-		return new ResponseBaseModel<UserDto>(returnedValue, HttpStatus.OK);
-	}
-
-	@Override
+    @Override
 	public ResponseBaseModel<UserDto> update(String id, UserDto t) {
 		User user = userRepository.findByUserId(id);
 		if (user == null)
@@ -98,9 +75,7 @@ public class UserServiceImpl implements UserService {
 		List<Address> address = addressRepository.findAllByUser(user);
 		returnedValue.setAddresses(address.stream().map(e->mapper.map(e, AddressDto.class)).collect(Collectors.toList()));
 		returnedValue.setRoles(role.stream().map(e->mapper.map(e, RoleDto.class)).collect(Collectors.toList()));
-
 		return new ResponseBaseModel<UserDto>(returnedValue, HttpStatus.OK);
-
 	}
 
 	@Override
@@ -111,6 +86,16 @@ public class UserServiceImpl implements UserService {
 		userRepository.delete(user);
 	}
 
+    // R
+	@Override
+	public ResponseBaseModel<UserDto> getEntityById(String id) {
+		User user = userRepository.findByUserId(id);
+		if (user == null)
+			throw new ServiceExceptionBase(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
+		UserDto returnedValue = mapper.map(user, UserDto.class);
+		return new ResponseBaseModel<UserDto>(returnedValue, HttpStatus.OK);
+	}
+
 	@Override
 	public ResponseBaseModel<List<UserDto>> getAll(int page, int limit) {
 		Pageable pageReq = PageRequest.of(page, limit);
@@ -118,11 +103,10 @@ public class UserServiceImpl implements UserService {
 		createEntityMapping();
 		List<UserDto> returnedValue = userList.stream().map(e -> mapper.map(e, UserDto.class))
 				.collect(Collectors.toList());
-		
 		return new ResponseBaseModel<List<UserDto>>(returnedValue, HttpStatus.OK);
 	}
 
-	
+	// Extra Business Logic
 	private void createEntityMapping() {
 		TypeMap<UserDto, User> typeMap = mapper.getTypeMap(UserDto.class, User.class);
 		if(typeMap==null) {
@@ -132,7 +116,6 @@ public class UserServiceImpl implements UserService {
 			mapper.createTypeMap(User.class, UserDto.class)
 		    .addMapping(User::getAdresses, UserDto::setAddresses)
 		    .addMapping(User::getRoles, UserDto::setRoles);
-
 		}
 	}
 

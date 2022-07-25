@@ -4,12 +4,8 @@ import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
-import com.bossware.app.business.security.UserWithSecurity;
 
 @Entity(name="addresses")
 public class Address extends BaseEntity{

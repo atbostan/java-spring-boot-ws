@@ -9,8 +9,10 @@ public class RoleDto {
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private String roleId;
 	private String roleName;
-	
+	private long userId;	
+
     @JsonBackReference
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private UserDto user;
 
 	public long getId() {
@@ -31,6 +33,15 @@ public class RoleDto {
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
 	}
+	
+	public long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(long userId) {
+		this.userId = userId;
+	}
+	
 	public UserDto getUser() {
 		return user;
 	}

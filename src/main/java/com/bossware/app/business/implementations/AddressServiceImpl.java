@@ -30,55 +30,65 @@ import com.bossware.app.shared.models.response.ResponseBaseModel;
 @Service
 public class AddressServiceImpl implements AddressService {
 	
-	@Autowired
-	UserRepository userRepository;
-	
-	@Autowired
-	AddressRepository repository;
-	
-	@Autowired
-	ModelMapper mapper;
-	
-	@Autowired
-	EntityStrIdGenerator addressIdGenarator;
+    @Autowired
+	private AddressRepository addressRepository;
 
+	@Autowired
+	private UserRepository userRepository;
+		
+	@Autowired
+	private ModelMapper mapper;
+	
+	@Autowired
+	private EntityStrIdGenerator addressIdGenarator;
+
+    //C - U - D
 	@Override
 	public ResponseBaseModel<AddressDto> create(AddressDto t) {
-		Address address = mapper.map(t, Address.class);
-		address.setAddressId(addressIdGenarator.generateId(20));
-		Address createdAdress = repository.save(address);
-		AddressDto returnedEntity = mapper.map(createdAdress, AddressDto.class);
-		return new ResponseBaseModel<AddressDto>(returnedEntity, HttpStatus.OK);
+		checkIfUserExist(t.getUserId());
+		Address mappedAddress = mapper.map(t, Address.class);
+		mappedAddress.setAddressId(addressIdGenarator.generateId(20));
+		Address createdAdress = addressRepository.save(mappedAddress);
+		AddressDto returnedValue = mapper.map(createdAdress, AddressDto.class);
+		return new ResponseBaseModel<AddressDto>(returnedValue, HttpStatus.OK);
 	}
 
-	@Override
-	public ResponseBaseModel<AddressDto> getEntityById(String id) {
-		Address entity = repository.findByAddressId(id);
-		AddressDto returnedEntity = mapper.map(entity, AddressDto.class);
-		return new ResponseBaseModel<AddressDto>(returnedEntity,HttpStatus.OK);
-	}
-
+    
 	@Override
 	public ResponseBaseModel<AddressDto> update(String id, AddressDto t) {
-		Address entity = repository.findByAddressId(id);
-		if(entity==null)  throw new ServiceExceptionBase(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
-		mapper.map(t, entity);
-		Address updatedEntity = repository.save(entity);
-		AddressDto returnedEntity = mapper.map(updatedEntity, AddressDto.class);
-		return new ResponseBaseModel<AddressDto>(returnedEntity,HttpStatus.OK);
+		Address address = addressRepository.findByAddressId(id);
+		if(address==null)  throw new ServiceExceptionBase(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
+		Address addressToUpdate = mapper.map(t, Address.class);
+		addressToUpdate.setAddressId(address.getAddressId());
+		addressToUpdate.setId(address.getId());
+		Address updatedEntity = addressRepository.save(addressToUpdate);
+		AddressDto returnedValue = mapper.map(updatedEntity, AddressDto.class);
+		return new ResponseBaseModel<AddressDto>(returnedValue,HttpStatus.OK);
 	}
 
 	@Override
 	public void delete(String id) {
-		Address entity = repository.findByAddressId(id);
-		repository.delete(entity);
-		
+		Address address = addressRepository.findByAddressId(id);
+		if (address == null)
+			throw new ServiceExceptionBase(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
+		addressRepository.delete(address);
 	}
+
+    // R
+	@Override
+	public ResponseBaseModel<AddressDto> getEntityById(String id) {
+		Address address = addressRepository.findByAddressId(id);
+		if (address == null)
+			throw new ServiceExceptionBase(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
+		AddressDto returnedValue = mapper.map(address, AddressDto.class);
+		return new ResponseBaseModel<AddressDto>(returnedValue,HttpStatus.OK);
+	}
+
 
 	@Override
 	public ResponseBaseModel<List<AddressDto>> getAll(int page, int limit) {
 		Pageable pageReq =  PageRequest.of(page,limit);
-		Page<Address> addressList = repository.findAll(pageReq);
+		Page<Address> addressList = addressRepository.findAll(pageReq);
 		List<AddressDto> returnedValue = addressList.stream().map(e->mapper.map(e, AddressDto.class)).collect(Collectors.toList());
 		return new ResponseBaseModel<List<AddressDto>>(returnedValue, HttpStatus.OK);
 
@@ -88,23 +98,21 @@ public class AddressServiceImpl implements AddressService {
 	public ResponseBaseModel<List<AddressDto>> getAddressByUserId(String id) {
 		User user = userRepository.findByUserId(id);
 		if(user==null)  throw new ServiceExceptionBase(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
-
-		List<Address> addressList = repository.findAllByUser(user);
+		List<Address> addressList = addressRepository.findAllByUser(user);
 		List<AddressDto> returnedValue = new ArrayList<AddressDto>();
 		if(!CollectionUtils.isEmpty(addressList)) {
 			Type listType = new TypeToken<List<AddressDto>>() {}.getType();
 			 returnedValue = mapper.map(addressList, listType);
 		}
-		//List<AddressDto> returnedValue = addressList.stream().map(e->mapper.map(e, AddressDto.class)).collect(Collectors.toList());
 		return new ResponseBaseModel<List<AddressDto>>(returnedValue, HttpStatus.OK);
 
 	}
 
-	@Override
-	public ResponseBaseModel<AddressDto> getAddressBelongsToUsersByAddressId(String userId, String addressId) {
-		List<AddressDto> addresses = getAddressByUserId(userId).getData();
-		AddressDto selectedAddress = addresses.stream().filter(x->x.getAddressId().equals(addressId)).findAny().get();	
-		return new ResponseBaseModel<AddressDto>(selectedAddress, HttpStatus.OK);
+	// Extra Business Logic
+	private void checkIfUserExist (long id) {
+		Optional<User> user = userRepository.findById(id);
+		if (!user.isPresent())
+			throw new ServiceExceptionBase(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
 	}
 
 }

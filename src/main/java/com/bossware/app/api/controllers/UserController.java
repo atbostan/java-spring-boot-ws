@@ -25,14 +25,34 @@ import com.bossware.app.shared.models.response.ResponseBaseModel;
 @RestController
 @RequestMapping("users")
 public class UserController {
-	
 	@Autowired
 	UserService userService;
 	
-
-	@Autowired
-	AddressService addressService;
 	
+    //C - U - D
+    @PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, produces = {
+			MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	public ResponseBaseModel<UserDto> createUser(@RequestBody RequestBaseModel<UserDto> user) throws Exception {
+		ResponseBaseModel<UserDto> createdUser = userService.create(user.getData());
+		return new ResponseBaseModel<UserDto>(createdUser.getData(),HttpStatus.OK);
+	}
+	
+
+	@PutMapping(path = "/{id}",consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, produces = {
+			MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	public ResponseBaseModel<UserDto> updateUser(@PathVariable String id ,@RequestBody RequestBaseModel<UserDto> user ) {
+		ResponseBaseModel<UserDto> updatedUser = userService.update(id,user.getData());
+		return new ResponseBaseModel<UserDto>(updatedUser.getData(),HttpStatus.OK);
+	}
+	
+	@DeleteMapping(path = "/{id}", produces = {
+			MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	public void deleteUser(@PathVariable String id) {
+		 userService.delete(id);
+
+	}
+
+    //R
 	@GetMapping(path = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
 	public  ResponseBaseModel<UserDto> getUser(@PathVariable String id) {
 		ResponseBaseModel<UserDto> user = userService.getEntityById(id);
@@ -46,40 +66,11 @@ public class UserController {
 	}
 
 	
-	@GetMapping(path = "/{id}/address", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
-	public ResponseBaseModel<List<AddressDto>> getAddressesByUser(@PathVariable String id){
-		ResponseBaseModel<List<AddressDto>> addressList = addressService.getAddressByUserId(id);
-		return new ResponseBaseModel<List<AddressDto>>(addressList.getData(),HttpStatus.OK);
-	}
-	
-	@GetMapping(path = "/{id}/address/{addressId}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
-	public ResponseBaseModel<AddressDto> getAddressesBelongsToUserByAddressId(@PathVariable String id, @PathVariable String addressId){
-		ResponseBaseModel<AddressDto> addressList = addressService.getAddressBelongsToUsersByAddressId(id,addressId);
-		return new ResponseBaseModel<AddressDto>(addressList.getData(),HttpStatus.OK);
-	}
 
-	@PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, produces = {
-			MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
-	public ResponseBaseModel<UserDto> createUser(@RequestBody RequestBaseModel<UserDto> user) throws Exception {
-		ResponseBaseModel<UserDto> createdUser = userService.create(user.getData());
-		return new ResponseBaseModel<UserDto>(createdUser.getData(),HttpStatus.OK);
-
-	}
 	
 
-	@PutMapping(path = "/{id}",consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE }, produces = {
-			MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
-	public ResponseBaseModel<UserDto> updateUser(@PathVariable String id ,@RequestBody RequestBaseModel<UserDto> user ) {
-		ResponseBaseModel<UserDto> updatedUser = userService.update(id,user.getData());
-		return new ResponseBaseModel<UserDto>(updatedUser.getData(),HttpStatus.OK);
-	}
-	
-	@DeleteMapping(path = "/{id}", produces = {
-			MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
-	public void deleteUser(@PathVariable String id) {
-		 userService.delete(id);
 
-	}
+
 
 
 
