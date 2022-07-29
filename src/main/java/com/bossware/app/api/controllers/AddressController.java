@@ -37,19 +37,19 @@ public class AddressController {
 
 	@PutMapping(path = "/{id}",consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, produces = {
 			MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
-	public ResponseBaseModel<AddressDto> updateAddress(@PathVariable String id ,@RequestBody RequestBaseModel<AddressDto> address ) {
+	public ResponseBaseModel<AddressDto> updateAddress(@PathVariable long id ,@RequestBody RequestBaseModel<AddressDto> address ) {
 		ResponseBaseModel<AddressDto> updateAddress = addressService.update(id,address.getData());
 		return updateAddress;
 	}
 	
 	@DeleteMapping(path = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
-	public void deleteAddress(@PathVariable String id) {
+	public void deleteAddress(@PathVariable long id) {
 		addressService.delete(id);
 	}
 
     //R
 	@GetMapping(path = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
-	public  ResponseBaseModel<AddressDto> getAddress(@PathVariable String id) {
+	public  ResponseBaseModel<AddressDto> getAddress(@PathVariable long id) {
 		ResponseBaseModel<AddressDto> address = addressService.getEntityById(id);
 		return address;
 	}
@@ -61,7 +61,7 @@ public class AddressController {
 	}
 
     @GetMapping(path = "/{id}/address", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
-	public ResponseBaseModel<List<AddressDto>> getAddressesByUser(@PathVariable String id){
+	public ResponseBaseModel<List<AddressDto>> getAddressesByUser(@PathVariable long id){
 		ResponseBaseModel<List<AddressDto>> addressList = addressService.getAddressByUserId(id);
 		return new ResponseBaseModel<List<AddressDto>>(addressList.getData(),HttpStatus.OK);
 	}

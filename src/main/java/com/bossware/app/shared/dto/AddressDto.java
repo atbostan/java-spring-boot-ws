@@ -6,8 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class AddressDto {
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private long id;
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
-	private String addressId;
+
 	private String city;
 	private String country;
 	private String streetName;
@@ -68,13 +67,6 @@ public class AddressDto {
 		this.type = type;
 	}
 
-	public String getAddressId() {
-		return addressId;
-	}
-
-	public void setAddressId(String addressId) {
-		this.addressId = addressId;
-	}
 
 	public long getUserId() {
 		return userId;

@@ -40,21 +40,21 @@ public class UserController {
 
 	@PutMapping(path = "/{id}",consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, produces = {
 			MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
-	public ResponseBaseModel<UserDto> updateUser(@PathVariable String id ,@RequestBody RequestBaseModel<UserDto> user ) {
+	public ResponseBaseModel<UserDto> updateUser(@PathVariable long id ,@RequestBody RequestBaseModel<UserDto> user ) {
 		ResponseBaseModel<UserDto> updatedUser = userService.update(id,user.getData());
 		return new ResponseBaseModel<UserDto>(updatedUser.getData(),HttpStatus.OK);
 	}
 	
 	@DeleteMapping(path = "/{id}", produces = {
 			MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
-	public void deleteUser(@PathVariable String id) {
+	public void deleteUser(@PathVariable long id) {
 		 userService.delete(id);
 
 	}
 
     //R
 	@GetMapping(path = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
-	public  ResponseBaseModel<UserDto> getUser(@PathVariable String id) {
+	public  ResponseBaseModel<UserDto> getUser(@PathVariable long id) {
 		ResponseBaseModel<UserDto> user = userService.getEntityById(id);
 		return user;
 	}

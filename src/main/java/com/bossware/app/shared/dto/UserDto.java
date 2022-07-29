@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class UserDto {
 	
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
-	private String userId;
+	private long id;
 	private String firstName;
 	private String lastName;
 	private String userName;
@@ -18,20 +18,15 @@ public class UserDto {
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String password;
 	
-	@JsonProperty(value = "addresses",access = JsonProperty.Access.READ_ONLY)
-    @JsonManagedReference
-    private List<AddressDto> addresses;
+   
 	
-	@JsonProperty(value = "roles",access = JsonProperty.Access.READ_ONLY)
-    @JsonManagedReference
-	private List<RoleDto> roles;
-	
-	public String getUserId() {
-		return userId;
+	public long getId() {
+		return id;
 	}
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setId(long id) {
+		this.id = id;
 	}
+
 	public String getFirstName() {
 		return firstName;
 	}
@@ -62,17 +57,6 @@ public class UserDto {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public List<AddressDto> getAddresses() {
-		return addresses;
-	}
-	public void setAddresses(List<AddressDto> addresses) {
-		this.addresses = addresses;
-	}
-	public List<RoleDto> getRoles() {
-		return roles;
-	}
-	public void setRoles(List<RoleDto> roles) {
-		this.roles = roles;
-	}
+
 	
 }

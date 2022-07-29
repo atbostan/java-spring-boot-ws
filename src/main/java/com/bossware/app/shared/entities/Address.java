@@ -10,15 +10,9 @@ import javax.persistence.ManyToOne;
 @Entity(name="addresses")
 public class Address extends BaseEntity{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -3392580769164257489L;
-	
 
-	
-	@Column(length=30,nullable = false)
-	private String addressId;
+
 	
 	@Column(length=15,nullable = false)
 	private String city;
@@ -39,12 +33,7 @@ public class Address extends BaseEntity{
 	@JoinColumn(name="users_id")
 	private User user;
 	
-	public String getAddressId() {
-		return addressId;
-	}
-	public void setAddressId(String addressId) {
-		this.addressId = addressId;
-	}
+
 	public String getCity() {
 		return city;
 	}
@@ -85,7 +74,7 @@ public class Address extends BaseEntity{
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + Objects.hash(addressId, city, country, postalCode, streetName, type, user);
+		result = prime * result + Objects.hash(city, country, postalCode, streetName, type, user);
 		return result;
 	}
 	@Override
@@ -97,18 +86,16 @@ public class Address extends BaseEntity{
 		if (getClass() != obj.getClass())
 			return false;
 		Address other = (Address) obj;
-		return Objects.equals(addressId, other.addressId) && Objects.equals(city, other.city)
-				&& Objects.equals(country, other.country) && Objects.equals(postalCode, other.postalCode)
-				&& Objects.equals(streetName, other.streetName) && Objects.equals(type, other.type)
-				&& Objects.equals(user, other.user);
+		return Objects.equals(city, other.city) && Objects.equals(country, other.country)
+				&& Objects.equals(postalCode, other.postalCode) && Objects.equals(streetName, other.streetName)
+				&& Objects.equals(type, other.type) && Objects.equals(user, other.user);
 	}
 	@Override
 	public String toString() {
-		return "Address [addressId=" + addressId + ", city=" + city + ", country=" + country + ", streetName="
-				+ streetName + ", postalCode=" + postalCode + ", type=" + type + ", user=" + user + ", id=" + id
-				+ ", creationTime=" + creationTime + ", creatorId=" + creatorId + ", deletionTime=" + deletionTime
-				+ ", deletorUserId=" + deletorUserId + ", modificationTime=" + modificationTime + ", modifierUserId="
-				+ modifierUserId + "]";
+		return "Address [city=" + city + ", country=" + country + ", streetName=" + streetName + ", postalCode="
+				+ postalCode + ", type=" + type + ", user=" + user + ", id=" + id + ", creationTime=" + creationTime
+				+ ", creatorId=" + creatorId + ", deletionTime=" + deletionTime + ", deletorUserId=" + deletorUserId
+				+ ", modificationTime=" + modificationTime + ", modifierUserId=" + modifierUserId + "]";
 	}
 
 	

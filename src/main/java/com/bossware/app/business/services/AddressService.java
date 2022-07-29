@@ -7,5 +7,5 @@ import com.bossware.app.shared.dto.AddressDto;
 import com.bossware.app.shared.models.response.ResponseBaseModel;
 
 public interface AddressService extends ServiceGenericBase<AddressDto>  {
-	ResponseBaseModel<List<AddressDto>> getAddressByUserId(String id);
+	ResponseBaseModel<List<AddressDto>> getAddressByUserId(long id);
 }

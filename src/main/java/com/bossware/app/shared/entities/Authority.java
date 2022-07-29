@@ -7,45 +7,38 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-@Entity(name="roles")
-public class Role extends BaseEntity {
+@Entity(name="authorities")
+public class Authority extends BaseEntity {
 
-	private static final long serialVersionUID = -3680139390894236847L;
-
+	private static final long serialVersionUID = 5074732866470580676L;
 
 	
-	@Column(length=30,nullable = false)
-	private String roleName;
-
+	private String authName;
 	
 	@ManyToOne
-	@JoinColumn(name="users_id")
-	private User user;
-
-
-	public String getRoleName() {
-		return roleName;
-	}
-
-	public void setRoleName(String roleName) {
-		this.roleName = roleName;
-	}
+	@JoinColumn(name="roles_id")
+	private Role role;
 	
-	public User getUser() {
-		return user;
+	public Role getRole() {
+		return role;
 	}
-	public void setUser(User user) {
-		this.user = user;
+	public void setRole(Role role) {
+		this.role = role;
+	}
+	public String getAuthName() {
+		return authName;
+	}
+	public void setAuthName(String authName) {
+		this.authName = authName;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + Objects.hash(roleName, user);
+		result = prime * result + Objects.hash(authName, role);
 		return result;
 	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -54,16 +47,14 @@ public class Role extends BaseEntity {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Role other = (Role) obj;
-		return Objects.equals(roleName, other.roleName) && Objects.equals(user, other.user);
+		Authority other = (Authority) obj;
+		return Objects.equals(authName, other.authName) && Objects.equals(role, other.role);
 	}
-
 	@Override
 	public String toString() {
-		return "Role [roleName=" + roleName + ", user=" + user + ", id=" + id + ", creationTime=" + creationTime
+		return "Authority [authName=" + authName + ", role=" + role + ", id=" + id + ", creationTime=" + creationTime
 				+ ", creatorId=" + creatorId + ", deletionTime=" + deletionTime + ", deletorUserId=" + deletorUserId
 				+ ", modificationTime=" + modificationTime + ", modifierUserId=" + modifierUserId + "]";
 	}
-	
 
 }

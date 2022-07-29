@@ -49,8 +49,12 @@ public class AppAuthProvider implements AuthenticationProvider  {
 		if (user!=null) {
 			if (encoder.matches(pwd, user.getPassword())) {
 				List<GrantedAuthority> authorities = new ArrayList<>();
-				authorities.add(new SimpleGrantedAuthority(roles.get(0).getRoleName()));
+				boolean authValue = roles.size() > 0 ? 
+						authorities.add(new SimpleGrantedAuthority(roles.get(0).getRoleName()))
+						:authorities.add(new SimpleGrantedAuthority("StandartUser"));
 				return new UsernamePasswordAuthenticationToken(credentialOne, pwd, authorities);
+
+		
 			} else {
 				throw new BadCredentialsException("Invalid password!");
 			}

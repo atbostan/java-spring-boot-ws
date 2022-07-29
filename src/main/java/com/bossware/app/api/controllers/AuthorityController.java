@@ -15,53 +15,52 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bossware.app.business.services.RoleService;
+import com.bossware.app.business.services.AuthorityService;
+import com.bossware.app.shared.dto.AuthorityDto;
 import com.bossware.app.shared.dto.RoleDto;
 import com.bossware.app.shared.models.request.RequestBaseModel;
 import com.bossware.app.shared.models.response.ResponseBaseModel;
 
 @RestController
-@RequestMapping("role")
-public class RoleController {
-	@Autowired
-	RoleService roleService;
-	
+@RequestMapping("authority")
+public class AuthorityController {
 
-    //C - U - D
+	@Autowired
+	AuthorityService authorityService;
+	
+	 //C - U - D
     @PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, produces = {
 			MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
-	public ResponseBaseModel<RoleDto> createAddress(@RequestBody RequestBaseModel<RoleDto> role) throws Exception {
-		ResponseBaseModel<RoleDto> createdRoles = roleService.create(role.getData());
-		return createdRoles;
+	public ResponseBaseModel<AuthorityDto> createAddress(@RequestBody RequestBaseModel<AuthorityDto> auth) throws Exception {
+		ResponseBaseModel<AuthorityDto> createdAuth = authorityService.create(auth.getData());
+		return createdAuth;
 	}
 	
 
 	@PutMapping(path = "/{id}",consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE }, produces = {
 			MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
-	public ResponseBaseModel<RoleDto> updateAddress(@PathVariable long id ,@RequestBody RequestBaseModel<RoleDto> role ) {
-		ResponseBaseModel<RoleDto> updateRole = roleService.update(id,role.getData());
-		return updateRole;
+	public ResponseBaseModel<AuthorityDto> updateAddress(@PathVariable long id ,@RequestBody RequestBaseModel<AuthorityDto> auth ) {
+		ResponseBaseModel<AuthorityDto> updateAuth = authorityService.update(id,auth.getData());
+		return updateAuth;
 	}
 	
 	@DeleteMapping(path = "/{id}", produces = {
 			MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
 	public void deleteAddress(@PathVariable long id) {
-		roleService.delete(id);
+		authorityService.delete(id);
 	}
 
     //R
 	@GetMapping(path = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
-	public  ResponseBaseModel<RoleDto> getRoles(@PathVariable long id) {
-		ResponseBaseModel<RoleDto> roles = roleService.getEntityById(id);
-		return roles;
+	public  ResponseBaseModel<AuthorityDto> getRoles(@PathVariable long id) {
+		ResponseBaseModel<AuthorityDto> auth = authorityService.getEntityById(id);
+		return auth;
 	}
 	
 	@GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
-	public ResponseBaseModel<List<RoleDto>> getRoles(@RequestParam(value="page",defaultValue = "0") int page,@RequestParam(value="limit",defaultValue = "25") int limit) {
-		ResponseBaseModel<List<RoleDto>> roleList = roleService.getAll(page,limit);
-		return new ResponseBaseModel<List<RoleDto>>(roleList.getData(),HttpStatus.OK);
+	public ResponseBaseModel<List<AuthorityDto>> getRoles(@RequestParam(value="page",defaultValue = "0") int page,@RequestParam(value="limit",defaultValue = "25") int limit) {
+		ResponseBaseModel<List<AuthorityDto>> authList = authorityService.getAll(page,limit);
+		return new ResponseBaseModel<List<AuthorityDto>>(authList.getData(),HttpStatus.OK);
 	}
-
-
 	
 }

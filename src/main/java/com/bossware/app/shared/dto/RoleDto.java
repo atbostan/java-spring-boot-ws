@@ -6,8 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class RoleDto {
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private long id;
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
-	private String roleId;
+
 	private String roleName;
 	private long userId;	
 
@@ -21,12 +20,7 @@ public class RoleDto {
 	public void setId(long id) {
 		this.id = id;
 	}
-	public String getRoleId() {
-		return roleId;
-	}
-	public void setRoleId(String roleId) {
-		this.roleId = roleId;
-	}
+
 	public String getRoleName() {
 		return roleName;
 	}

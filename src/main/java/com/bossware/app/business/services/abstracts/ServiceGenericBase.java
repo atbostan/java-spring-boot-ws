@@ -7,11 +7,11 @@ import com.bossware.app.shared.models.response.ResponseBaseModel;
 public interface ServiceGenericBase<T> {
 	ResponseBaseModel<T> create(T t);
 
-	ResponseBaseModel<T> getEntityById(String id);
+	ResponseBaseModel<T> getEntityById(long id);
 
-	ResponseBaseModel<T> update(String id, T t);
+	ResponseBaseModel<T> update(long id, T t);
 
-	void delete(String id);
+	void delete(long id);
 
 	ResponseBaseModel<List<T>> getAll(int page, int limit);
 

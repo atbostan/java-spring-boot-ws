@@ -36,6 +36,10 @@ public class AppSecurityConfig {
 	        "/configuration/**",
 	        "/swagger*/**"
 	};
+	
+	private static final String[] AUTH_BLACKLIST = {
+	       
+	};
 
 
 	
@@ -58,7 +62,8 @@ public class AppSecurityConfig {
 		.and()
 		.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 		.and()
-		.authorizeHttpRequests((auth) -> auth.antMatchers(AUTH_WHITELIST).permitAll()).
+		.authorizeHttpRequests((auth) -> auth
+				.antMatchers(AUTH_WHITELIST).permitAll()).
 		httpBasic(Customizer.withDefaults());
 
 		return http.build();
