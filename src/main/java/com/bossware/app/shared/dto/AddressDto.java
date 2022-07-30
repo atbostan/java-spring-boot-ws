@@ -1,6 +1,5 @@
 package com.bossware.app.shared.dto;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class AddressDto {
@@ -15,9 +14,7 @@ public class AddressDto {
 	
 	private long userId;	
 	
-    @JsonBackReference
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
-	private UserDto user;
+ 
 
 	public long getId() {
 		return id;
@@ -76,12 +73,5 @@ public class AddressDto {
 		this.userId = userId;
 	}
 
-	public UserDto getUser() {
-		return user;
-	}
-
-	public void setUser(UserDto user) {
-		this.user = user;
-	}
 
 }

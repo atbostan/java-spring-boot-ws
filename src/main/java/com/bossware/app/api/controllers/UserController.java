@@ -30,36 +30,36 @@ public class UserController {
 	
 	
     //C - U - D
-    @PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, produces = {
-			MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+    @PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE  }, produces = {
+			MediaType.APPLICATION_JSON_VALUE  })
 	public ResponseBaseModel<UserDto> createUser(@RequestBody RequestBaseModel<UserDto> user) throws Exception {
 		ResponseBaseModel<UserDto> createdUser = userService.create(user.getData());
 		return new ResponseBaseModel<UserDto>(createdUser.getData(),HttpStatus.OK);
 	}
 	
 
-	@PutMapping(path = "/{id}",consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, produces = {
-			MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	@PutMapping(path = "/{id}",consumes = { MediaType.APPLICATION_JSON_VALUE  }, produces = {
+			MediaType.APPLICATION_JSON_VALUE  })
 	public ResponseBaseModel<UserDto> updateUser(@PathVariable long id ,@RequestBody RequestBaseModel<UserDto> user ) {
 		ResponseBaseModel<UserDto> updatedUser = userService.update(id,user.getData());
 		return new ResponseBaseModel<UserDto>(updatedUser.getData(),HttpStatus.OK);
 	}
 	
 	@DeleteMapping(path = "/{id}", produces = {
-			MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+			MediaType.APPLICATION_JSON_VALUE  })
 	public void deleteUser(@PathVariable long id) {
 		 userService.delete(id);
 
 	}
 
     //R
-	@GetMapping(path = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	@GetMapping(path = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE  })
 	public  ResponseBaseModel<UserDto> getUser(@PathVariable long id) {
 		ResponseBaseModel<UserDto> user = userService.getEntityById(id);
 		return user;
 	}
 	
-	@GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	@GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE  })
 	public ResponseBaseModel<List<UserDto>> getUser(@RequestParam(value="page",defaultValue = "0") int page,@RequestParam(value="limit",defaultValue = "25") int limit) {
 		ResponseBaseModel<List<UserDto>> userList = userService.getAll(page,limit);
 		return new ResponseBaseModel<List<UserDto>>(userList.getData(),HttpStatus.OK);

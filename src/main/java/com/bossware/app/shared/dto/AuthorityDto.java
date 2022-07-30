@@ -11,9 +11,7 @@ public class AuthorityDto {
 	
 	private long roleId;
 	
-    @JsonBackReference
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
-	private RoleDto role;
+
 
 	public long getId() {
 		return id;
@@ -39,13 +37,7 @@ public class AuthorityDto {
 		this.authName = authName;
 	}
 
-	public RoleDto getRole() {
-		return role;
-	}
 
-	public void setRole(RoleDto role) {
-		this.role = role;
-	}
     
     
 }

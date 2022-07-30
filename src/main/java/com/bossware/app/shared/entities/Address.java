@@ -7,6 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity(name="addresses")
 public class Address extends BaseEntity{
 
@@ -29,6 +32,7 @@ public class Address extends BaseEntity{
 	@Column(length=10,nullable = false)
 	private String type;
 	
+    @OnDelete(action = OnDeleteAction.CASCADE)
 	@ManyToOne
 	@JoinColumn(name="users_id")
 	private User user;

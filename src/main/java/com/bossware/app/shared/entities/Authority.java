@@ -2,10 +2,12 @@ package com.bossware.app.shared.entities;
 
 import java.util.Objects;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity(name="authorities")
 public class Authority extends BaseEntity {
@@ -15,6 +17,7 @@ public class Authority extends BaseEntity {
 	
 	private String authName;
 	
+    @OnDelete(action = OnDeleteAction.CASCADE)
 	@ManyToOne
 	@JoinColumn(name="roles_id")
 	private Role role;

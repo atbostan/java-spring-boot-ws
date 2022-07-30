@@ -8,7 +8,7 @@ import com.bossware.app.shared.dto.RoleDto;
 import com.bossware.app.shared.models.response.ResponseBaseModel;
 
 public interface AuthorityService extends ServiceGenericBase<AuthorityDto> {
-	ResponseBaseModel<List<AuthorityDto>> getAuthoritiesByUserId(long id);
+	ResponseBaseModel<List<AuthorityDto>> getAuthoritiesByRoleId(long id);
 
 
 }

@@ -27,40 +27,40 @@ public class AddressController {
 	AddressService addressService;
 	
     //C - U - D
-    @PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, produces = {
-			MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+    @PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = {
+			MediaType.APPLICATION_JSON_VALUE})
 	public ResponseBaseModel<AddressDto> createAddress(@RequestBody RequestBaseModel<AddressDto> address) throws Exception {
 		ResponseBaseModel<AddressDto> createdAddress = addressService.create(address.getData());
 		return createdAddress;
 	}
 	
 
-	@PutMapping(path = "/{id}",consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE }, produces = {
-			MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	@PutMapping(path = "/{id}",consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = {
+			MediaType.APPLICATION_JSON_VALUE})
 	public ResponseBaseModel<AddressDto> updateAddress(@PathVariable long id ,@RequestBody RequestBaseModel<AddressDto> address ) {
 		ResponseBaseModel<AddressDto> updateAddress = addressService.update(id,address.getData());
 		return updateAddress;
 	}
 	
-	@DeleteMapping(path = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	@DeleteMapping(path = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE  })
 	public void deleteAddress(@PathVariable long id) {
 		addressService.delete(id);
 	}
 
     //R
-	@GetMapping(path = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	@GetMapping(path = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE  })
 	public  ResponseBaseModel<AddressDto> getAddress(@PathVariable long id) {
 		ResponseBaseModel<AddressDto> address = addressService.getEntityById(id);
 		return address;
 	}
 	
-	@GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+	@GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE  })
 	public ResponseBaseModel<List<AddressDto>> getAddress(@RequestParam(value="page",defaultValue = "0") int page,@RequestParam(value="limit",defaultValue = "25") int limit) {
 		ResponseBaseModel<List<AddressDto>> addressList = addressService.getAll(page,limit);
 		return new ResponseBaseModel<List<AddressDto>>(addressList.getData(),HttpStatus.OK);
 	}
 
-    @GetMapping(path = "/{id}/address", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE })
+    @GetMapping(path = "/{id}/address", produces = { MediaType.APPLICATION_JSON_VALUE  })
 	public ResponseBaseModel<List<AddressDto>> getAddressesByUser(@PathVariable long id){
 		ResponseBaseModel<List<AddressDto>> addressList = addressService.getAddressByUserId(id);
 		return new ResponseBaseModel<List<AddressDto>>(addressList.getData(),HttpStatus.OK);

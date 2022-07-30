@@ -91,7 +91,7 @@ public class AuthorityServiceImpl implements AuthorityService {
 	}
 
 	@Override
-	public ResponseBaseModel<List<AuthorityDto>> getAuthoritiesByUserId(long id) {
+	public ResponseBaseModel<List<AuthorityDto>> getAuthoritiesByRoleId(long id) {
 		Optional<Role> entity = roleRepository.findById(id);
 		if(entity==null)  throw new ServiceExceptionBase(ErrorMessages.NO_RECORD_FOUND.getErrorMessage());
 		List<Authority> authList = authorityRepository.findAllByRole(entity.get());

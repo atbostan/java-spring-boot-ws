@@ -7,6 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity(name="roles")
 public class Role extends BaseEntity {
 
@@ -16,8 +19,8 @@ public class Role extends BaseEntity {
 	
 	@Column(length=30,nullable = false)
 	private String roleName;
-
 	
+    @OnDelete(action = OnDeleteAction.CASCADE)
 	@ManyToOne
 	@JoinColumn(name="users_id")
 	private User user;
