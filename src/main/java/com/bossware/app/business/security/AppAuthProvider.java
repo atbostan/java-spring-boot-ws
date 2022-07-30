@@ -2,6 +2,7 @@ package com.bossware.app.business.security;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.bossware.app.business.services.UserService;
+import com.bossware.app.persistance.repositories.AuthorityRepository;
 import com.bossware.app.persistance.repositories.RoleRepository;
 import com.bossware.app.persistance.repositories.UserRepository;
+import com.bossware.app.shared.entities.Authority;
 import com.bossware.app.shared.entities.Role;
 import com.bossware.app.shared.entities.User;
 
@@ -31,13 +34,11 @@ public class AppAuthProvider implements AuthenticationProvider  {
 	private RoleRepository roleRepository;
 	
 	@Autowired
-	private UserService userService;
+	private AuthorityRepository authRepository;
 	
 	@Autowired
 	private PasswordEncoder encoder;
 
-	@Autowired
-	private ModelMapper mapper;
 	
 	
 	@Override
@@ -48,11 +49,8 @@ public class AppAuthProvider implements AuthenticationProvider  {
 		List<Role> roles = roleRepository.findAllByUser(user);
 		if (user!=null) {
 			if (encoder.matches(pwd, user.getPassword())) {
-				List<GrantedAuthority> authorities = new ArrayList<>();
-				boolean authValue = roles.size() > 0 ? 
-						authorities.add(new SimpleGrantedAuthority(roles.get(0).getRoleName()))
-						:authorities.add(new SimpleGrantedAuthority("StandartUser"));
-				return new UsernamePasswordAuthenticationToken(credentialOne, pwd, authorities);
+				
+				return new UsernamePasswordAuthenticationToken(credentialOne, pwd, getAuthsByRole(roles.get(0)));
 
 		
 			} else {
@@ -68,5 +66,16 @@ public class AppAuthProvider implements AuthenticationProvider  {
 	public boolean supports(Class<?> authentication) {
 		return authentication.equals(UsernamePasswordAuthenticationToken.class);	
 	}
-
+	
+	private List<GrantedAuthority> getAuthsByRole (Role role){
+		List<GrantedAuthority> grantedAuth = new ArrayList<>();
+		List<Authority> authList = authRepository.findAllByRole(role);
+		for (Authority authority : authList) {
+			grantedAuth.add(new SimpleGrantedAuthority(authority.getAuthName()));
+		}
+		return grantedAuth;
+			
+		
+	}
+	
 }

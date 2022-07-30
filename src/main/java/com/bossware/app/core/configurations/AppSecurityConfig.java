@@ -38,7 +38,6 @@ public class AppSecurityConfig {
 	};
 	
 	private static final String[] AUTH_BLACKLIST = {
-	       
 	};
 
 
@@ -62,7 +61,7 @@ public class AppSecurityConfig {
 		.and()
 		.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 		.and()
-		.authorizeHttpRequests((auth) -> auth
+		.authorizeHttpRequests((auth) -> auth.antMatchers("/users").hasAuthority("CRUD")
 				.antMatchers(AUTH_WHITELIST).permitAll()).
 		httpBasic(Customizer.withDefaults());
 

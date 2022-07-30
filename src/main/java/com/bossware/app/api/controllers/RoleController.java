@@ -31,7 +31,7 @@ public class RoleController {
     //C - U - D
     @PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE  }, produces = {
 			MediaType.APPLICATION_JSON_VALUE  })
-	public ResponseBaseModel<RoleDto> createAddress(@RequestBody RequestBaseModel<RoleDto> role) throws Exception {
+	public ResponseBaseModel<RoleDto> createRole(@RequestBody RequestBaseModel<RoleDto> role) throws Exception {
 		ResponseBaseModel<RoleDto> createdRoles = roleService.create(role.getData());
 		return createdRoles;
 	}
@@ -39,14 +39,14 @@ public class RoleController {
 
 	@PutMapping(path = "/{id}",consumes = {  MediaType.APPLICATION_JSON_VALUE }, produces = {
 			 MediaType.APPLICATION_JSON_VALUE })
-	public ResponseBaseModel<RoleDto> updateAddress(@PathVariable long id ,@RequestBody RequestBaseModel<RoleDto> role ) {
+	public ResponseBaseModel<RoleDto> updateRole(@PathVariable long id ,@RequestBody RequestBaseModel<RoleDto> role ) {
 		ResponseBaseModel<RoleDto> updateRole = roleService.update(id,role.getData());
 		return updateRole;
 	}
 	
 	@DeleteMapping(path = "/{id}", produces = {
 			MediaType.APPLICATION_JSON_VALUE  })
-	public void deleteAddress(@PathVariable long id) {
+	public void deleteRole(@PathVariable long id) {
 		roleService.delete(id);
 	}
 

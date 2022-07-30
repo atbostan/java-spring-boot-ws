@@ -31,7 +31,7 @@ public class AuthorityController {
 	 //C - U - D
     @PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE  }, produces = {
 			MediaType.APPLICATION_JSON_VALUE  })
-	public ResponseBaseModel<AuthorityDto> createAddress(@RequestBody RequestBaseModel<AuthorityDto> auth) throws Exception {
+	public ResponseBaseModel<AuthorityDto> createAuth(@RequestBody RequestBaseModel<AuthorityDto> auth) throws Exception {
 		ResponseBaseModel<AuthorityDto> createdAuth = authorityService.create(auth.getData());
 		return createdAuth;
 	}
@@ -39,33 +39,33 @@ public class AuthorityController {
 
 	@PutMapping(path = "/{id}",consumes = {MediaType.APPLICATION_JSON_VALUE }, produces = {
 			 MediaType.APPLICATION_JSON_VALUE })
-	public ResponseBaseModel<AuthorityDto> updateAddress(@PathVariable long id ,@RequestBody RequestBaseModel<AuthorityDto> auth ) {
+	public ResponseBaseModel<AuthorityDto> updateAuth(@PathVariable long id ,@RequestBody RequestBaseModel<AuthorityDto> auth ) {
 		ResponseBaseModel<AuthorityDto> updateAuth = authorityService.update(id,auth.getData());
 		return updateAuth;
 	}
 	
 	@DeleteMapping(path = "/{id}", produces = {
 			MediaType.APPLICATION_JSON_VALUE  })
-	public void deleteAddress(@PathVariable long id) {
+	public void deleteAuth(@PathVariable long id) {
 		authorityService.delete(id);
 	}
 
     //R
 	@GetMapping(path = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE  })
-	public  ResponseBaseModel<AuthorityDto> getRoles(@PathVariable long id) {
+	public  ResponseBaseModel<AuthorityDto> getAuths(@PathVariable long id) {
 		ResponseBaseModel<AuthorityDto> auth = authorityService.getEntityById(id);
 		return auth;
 	}
 	
 	@GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE  })
-	public ResponseBaseModel<List<AuthorityDto>> getRoles(@RequestParam(value="page",defaultValue = "0") int page,@RequestParam(value="limit",defaultValue = "25") int limit) {
+	public ResponseBaseModel<List<AuthorityDto>> getAuths(@RequestParam(value="page",defaultValue = "0") int page,@RequestParam(value="limit",defaultValue = "25") int limit) {
 		ResponseBaseModel<List<AuthorityDto>> authList = authorityService.getAll(page,limit);
 		return new ResponseBaseModel<List<AuthorityDto>>(authList.getData(),HttpStatus.OK);
 	}
 	
 	
     @GetMapping(path = "/{id}/authorities", produces = { MediaType.APPLICATION_JSON_VALUE  })
-	public ResponseBaseModel<List<AuthorityDto>> getRolesByUser(@PathVariable long id){
+	public ResponseBaseModel<List<AuthorityDto>> getAuthsByRole(@PathVariable long id){
 		ResponseBaseModel<List<AuthorityDto>> authList = authorityService.getAuthoritiesByRoleId(id);
 		return new ResponseBaseModel<List<AuthorityDto>>(authList.getData(),HttpStatus.OK);
 	}
